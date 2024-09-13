@@ -118,7 +118,7 @@ const getAllUser = async (req, res) => {
 };
 const getImage = async (req, res) => {
   const imageName = req.params.img;
-  res.sendFile(path.resolve("public/uploads", imageName), (error) => {
+  res.sendFile(path.resolve("./public/uploads/", imageName), (error) => {
     if (error) {
       res.status(404).send({
         message: "Imagen no encontrada",
