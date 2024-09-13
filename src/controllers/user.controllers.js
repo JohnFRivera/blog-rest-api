@@ -15,7 +15,7 @@ const authenticate = async (req, res) => {
           if (result) {
             var userData = {
               userId: user.id,
-              userPhoto: `http://${process.env.RENDER_URL}/profile/${user.photo}`,
+              userPhoto: `${process.env.RENDER_URL}/profile/${user.photo}`,
               userName: user.name,
             };
             if (user.role == "Administrador") {
@@ -63,7 +63,7 @@ const createUser = async (req, res) => {
           req.body.password = hash;
           let newUser = (await User.create(req.body)).dataValues;
           var photo = newUser.photo;
-          newUser.photo = `http://${process.env.RENDER_URL}/profile/${photo}`;
+          newUser.photo = `${process.env.RENDER_URL}/profile/${photo}`;
           globalPhotoName = "user-tumbnail.jpg";
           res.status(200).send(newUser);
         } else {
@@ -104,7 +104,7 @@ const getAllUser = async (req, res) => {
     var modifyUsers = users.map((user) => {
       return {
         id: user.id,
-        photo: `http://${process.env.RENDER_URL}/profile/${user.photo}`,
+        photo: `${process.env.RENDER_URL}/profile/${user.photo}`,
         name: user.name,
         email: user.email,
         role: user.role,
