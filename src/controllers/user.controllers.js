@@ -63,7 +63,7 @@ const createUser = async (req, res) => {
           req.body.password = hash;
           let newUser = (await User.create(req.body)).dataValues;
           var photo = newUser.photo;
-          newUser.photo = `http://${process.env.DB_HOST}:${process.env.DB_PORT}/profile/${photo}`;
+          newUser.photo = `http://${process.env.RENDER_URL}/profile/${photo}`;
           globalPhotoName = "user-tumbnail.jpg";
           res.status(200).send(newUser);
         } else {
