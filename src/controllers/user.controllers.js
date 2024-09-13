@@ -15,7 +15,7 @@ const authenticate = async (req, res) => {
           if (result) {
             var userData = {
               userId: user.id,
-              userPhoto: `http://${process.env.DB_HOST}:${process.env.DB_PORT}/profile/${user.photo}`,
+              userPhoto: `http://${process.env.RENDER_URL}/profile/${user.photo}`,
               userName: user.name,
             };
             if (user.role == "Administrador") {
@@ -104,7 +104,7 @@ const getAllUser = async (req, res) => {
     var modifyUsers = users.map((user) => {
       return {
         id: user.id,
-        photo: `http://${process.env.DB_HOST}:${process.env.DB_PORT}/profile/${user.photo}`,
+        photo: `http://${process.env.RENDER_URL}/profile/${user.photo}`,
         name: user.name,
         email: user.email,
         role: user.role,
