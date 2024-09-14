@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { getQuote, getAllQuotes, getAllQuotesByAuthorPk, createQuote, deleteQuote, updateQuote } from "../controllers/quote.controllers.js";
+import { getQuoteByPk, getAllQuotes, getAllQuotesByAuthorPk, createQuote, deleteQuote, updateQuote } from "../controllers/quote.controllers.js";
 
 const router = Router();
 /**
  * Public
  */
-router.get("/quote/get/:id", getQuote); //? Traer cita por id
+router.get("/quote/get/:id", getQuoteByPk); //? Traer cita por id
 router.get("/quotes/get", getAllQuotes); //? Traer todas las citas
 router.get("/quotes/autor/:id", getAllQuotesByAuthorPk); //? Traer todas las citas de autor por su id
 /**
