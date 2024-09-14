@@ -1,55 +1,50 @@
 import Quote from "../models/quote.js";
 import Author from "../models/author.js";
-//Controladores
+
 const createQuote = async (req, res) => {
   try {
-    let quoteData = (await Quote.create(req.body)).dataValues;
-    const authorData = (
-      await Author.findByPk(parseInt(quoteData.AuthorId), {
-        attributes: ["id", "photoUrl", "name"],
-      })
-    ).dataValues;
-    quoteData.Author = authorData;
-    res.status(200).send(quoteData);
+    let quote = await Quote.create(req.body);
+    quote.dataValues.Author = await Author.findByPk(req.body.authorId, {
+      attributes: ["id", "photoUrl", "name"],
+    });
+    res.status(200).send(quote);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
 const updateQuote = async (req, res) => {
   try {
-    const updatedQuote = await Quote.update(req.body, {
+    const affectedRows = await Quote.update(req.body, {
       where: { id: req.params.id },
     });
-    res.status(200).send(updatedQuote);
+    res.status(200).send(affectedRows);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
 const deleteQuote = async (req, res) => {
   try {
-    const deletedQuote = await Quote.destroy({
+    const affectedRows = await Quote.destroy({
       where: { id: req.params.id },
     });
-    res.status(200).send({
-      message: "Cita Eliminado correctamente",
-    });
+    res.status(200).send(affectedRows);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
 const getAllQuotes = async (req, res) => {
   try {
     const quotes = await Quote.findAll({
-      attributes: ["id", "description", "reference"],
+      attributes: ["id", "description", "reference", "createdAt", "updatedAt"],
       include: { model: Author, attributes: ["id", "photoUrl", "name"] },
       order: [["createdAt", "DESC"]],
     });
     res.status(200).send(quotes);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
-const getAutorQuotes = async (req, res) => {
+const getAllQuotesByAuthorPk = async (req, res) => {
   try {
     const quotes = await Quote.findAll({
       attributes: ["id", "description", "reference"],
@@ -57,25 +52,25 @@ const getAutorQuotes = async (req, res) => {
     });
     res.status(200).send(quotes);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
 const getQuote = async (req, res) => {
   try {
-    const quotes = await Quote.findByPk(req.params.id, {
-      attributes: ["id", "description", "reference", "createdAt"],
+    const quote = await Quote.findByPk(req.params.id, {
+      attributes: ["id", "description", "reference", "createdAt", "updatedAt"],
     });
-    res.status(200).send(quotes);
+    res.status(200).send(quote);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
-//Exportado
+
 export {
   createQuote,
   updateQuote,
   deleteQuote,
   getAllQuotes,
-  getAutorQuotes,
+  getAllQuotesByAuthorPk,
   getQuote,
 };
