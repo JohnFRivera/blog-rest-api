@@ -5,12 +5,12 @@ const router = Router();
 /**
  * Public
  */
-router.get("/author/get/:id", getAuthorByPk);
-router.get("/author/getall", getAllAuthors);
+router.get("/author/get/:id", getAuthorByPk); //? Traer autor por su id
+router.get("/authors/getall", getAllAuthors); //? Traer todos los autores
 /**
  * Private
  */
-router.post("/admin/author/create", createAuthor);
-router.put("/admin/author/update/:id", updateAuthor);
+router.post("/admin/author/create", createAuthor); //? Crear autor
+router.put("/admin/author/update/:id", updateAuthor); //? Editar autor por su id
 //Exportado
 export default router;

@@ -9,46 +9,39 @@ const getAuthorByPk = async (req, res) => {
     });
     res.status(200).send(author);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
+  }
+};
+const getAllAuthors = async (req, res) => {
+  try {
+    const authors = await Author.findAll({
+      order: [["createdAt", "DESC"]],
+    });
+    res.status(200).send(authors);
+  } catch (error) {
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
 /**
  * Private
  */
-const getAllAuthors = async (req, res) => {
-  try {
-    const authors = await Author.findAll({
-      attributes: ["id", "photoUrl", "name", "occupation"],
-      order: [["createdAt", "DESC"]],
-    });
-    res.status(200).send(authors);
-  } catch (error) {
-    res.status(400).send({ error });
-  }
-};
 const createAuthor = async (req, res) => {
   try {
-    const newAuthor = await Author.create(req.body, {
-      attributes: ["id", "photoUrl", "name", "occupation"],
-    });
-    res.status(200).send(newAuthor);
+    const author = await Author.create(req.body);
+    res.status(200).send(author);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
 const updateAuthor = async (req, res) => {
   try {
-    const rowsAffected = await Author.update(req.body, {
+    const affectedRows = await Author.update(req.body, {
       where: { id: req.params.id },
     });
-    if (rowsAffected > 0) {
-      res.status(200).send({ message: "Editado correctamente" });
-    } else {
-      res.status(400).send({ error: "No se pudo editar el autor" });
-    }
+    res.status(200).send(affectedRows);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
-//Exportado
+
 export { getAuthorByPk, getAllAuthors, createAuthor, updateAuthor };
