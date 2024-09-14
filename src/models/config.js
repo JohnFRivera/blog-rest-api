@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 import "dotenv/config";
-//Declaraciones
+//Variables de entorno
 const DIALECT = process.env.DB_DIALECT;
 const DATABASE = process.env.DB_DATABASE;
 const USERNAME = process.env.DB_USERNAME;
@@ -14,5 +14,5 @@ const sequelize = new Sequelize(DATABASE, USERNAME, PASSWORD, {
 sequelize.authenticate()
     .then(() => console.log("_Conexión establecida_"))
     .catch((error) => console.error(`_Conexión erronea_: ${error}`));
-//Exportado
+
 export default sequelize;

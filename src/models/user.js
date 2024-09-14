@@ -51,5 +51,5 @@ const User = sequelize.define("User", {
 //Relaciones
 User.hasMany(Comment);
 Comment.belongsTo(User);
-//Exportado
+
 export default User;

@@ -42,5 +42,5 @@ const Author = sequelize.define(
 //Relaciones
 Author.hasMany(Quote);
 Quote.belongsTo(Author);
-//Exportado
+
 export default Author;

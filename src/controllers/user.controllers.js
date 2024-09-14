@@ -4,7 +4,7 @@ import sharpMulter from "sharp-multer";
 import path from "path";
 import "dotenv/config";
 import User from "../models/user.js";
-//Controladores
+
 const authenticate = async (req, res) => {
   try {
     const user = await User.findOne({ where: { email: req.body.email } });
@@ -64,7 +64,7 @@ const createUser = async (req, res) => {
         if (!error) {
           req.body.photo = globalPhotoName;
           req.body.password = hash;
-          let newUser = (await User.create(req.body)).dataValues;
+          let newUser = await User.create(req.body);
           globalPhotoName = "user-tumbnail.jpg";
           res.status(200).send(newUser);
         } else {
@@ -80,10 +80,10 @@ const createUser = async (req, res) => {
 };
 const updateUser = async (req, res) => {
   try {
-    const updatedUser = await User.update(req.body, {
+    const affectedRows = await User.update(req.body, {
       where: { id: req.params.id },
     });
-    res.status(200).send(updatedUser);
+    res.status(200).send(affectedRows);
   } catch (error) {
     res.status(400).send({ error: "Error en la consulta", result: error });
   }
@@ -99,7 +99,7 @@ const getUserByPk = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ["id", "photo", "name", "email", "role", "state"],
+      attributes: ["id", "photo", "name", "email", "role", "state", "createdAt", "updatedAt"],
       order: [["createdAt", "DESC"]],
     });
     res.status(200).send(users);
@@ -118,7 +118,7 @@ const getProfileImg = async (req, res) => {
     }
   });
 };
-//Exportado
+
 export {
   authenticate,
   getUploadMiddleware,

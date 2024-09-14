@@ -7,5 +7,5 @@ const Comment = sequelize.define("Comment", {
     allowNull: false,
   },
 });
-//Exportado
+
 export default Comment;

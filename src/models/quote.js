@@ -15,5 +15,5 @@ const Quote = sequelize.define("Quote", {
 //Relaciones
 Quote.hasMany(Comment);
 Comment.belongsTo(Quote);
-//Exportado
+
 export default Quote;

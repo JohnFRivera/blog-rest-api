@@ -55,10 +55,10 @@ const getAllQuotesByAuthorPk = async (req, res) => {
     res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
-const getQuote = async (req, res) => {
+const getQuoteByPk = async (req, res) => {
   try {
     const quote = await Quote.findByPk(req.params.id, {
-      attributes: ["id", "description", "reference", "createdAt", "updatedAt"],
+      attributes: ["description", "reference", "createdAt", "updatedAt"],
     });
     res.status(200).send(quote);
   } catch (error) {
@@ -72,5 +72,5 @@ export {
   deleteQuote,
   getAllQuotes,
   getAllQuotesByAuthorPk,
-  getQuote,
+  getQuoteByPk,
 };
