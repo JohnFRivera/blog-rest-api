@@ -1,31 +1,28 @@
 import Comment from "../models/comment.js";
 import User from "../models/user.js";
-//Controladores
+
 const createComment = async (req, res) => {
   try {
-    let newComment = (await Comment.create(req.body)).dataValues;
-    const userData = (
-      await User.findByPk(parseInt(newComment.UserId), {
-        attributes: ["photo", "name"],
-      })
-    ).dataValues;
-    newComment.User = userData;
-    res.status(200).send(newComment);
+    let comment = await Comment.create(req.body);
+    comment.dataValues.User = await User.findByPk(req.body.UserId, {
+      attributes: ["photo", "name"],
+    });
+    res.status(200).send(comment);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
 const deleteComment = async (req, res) => {
   try {
-    const deletedComment = await Comment.destroy({
+    const affectedRows = await Comment.destroy({
       where: { id: req.params.id },
     });
-    res.status(200).send(deletedComment);
+    res.status(200).send(affectedRows);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
-const getQuoteComments = async (req, res) => {
+const getAllCommentsByQuotePk = async (req, res) => {
   try {
     const comments = await Comment.findAll({
       attributes: ["id", "description", "createdAt"],
@@ -35,8 +32,8 @@ const getQuoteComments = async (req, res) => {
     });
     res.status(200).send(comments);
   } catch (error) {
-    res.status(400).send({ error });
+    res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
-//Exportado
-export { createComment, deleteComment, getQuoteComments };
+
+export { createComment, deleteComment, getAllCommentsByQuotePk };
