@@ -4,24 +4,24 @@ import {
   getUploadMiddleware,
   createUser,
   updateUser,
-  getUser,
-  getAllUser,
-  getImage,
+  getUserByPk,
+  getAllUsers,
+  getProfileImg,
 } from "../controllers/user.controllers.js";
-//Declaraciones
+
 const router = Router();
 const upload = getUploadMiddleware();
 /**
  * Public
  */
-router.post("/user/auth", authenticate);
-router.post("/user/create", upload.single("photo"), createUser);
-router.get("/profile/:img", getImage);
+router.post("/user/auth", authenticate); //? Inicio de sesión
+router.post("/user/create", upload.single("photo"), createUser); //? Registrarse
+router.get("/profile/:img", getProfileImg); //? Servir Imagen
 /**
  * Private
  */
-router.get("/admin/user/get/:id", getUser);
-router.get("/admin/user/get", getAllUser);
-router.put("/admin/user/update/:id", updateUser);
-//Exportado
+router.get("/admin/user/get/:id", getUserByPk); //? Traer usuario por id
+router.get("/admin/user/get", getAllUsers); //? Traer todos los usuarios
+router.put("/admin/user/update/:id", updateUser); //? Actualizar usuario
+
 export default router;
