@@ -21,7 +21,7 @@ router.get("/profile/:img", getProfileImg); //? Servir Imagen
  * Private
  */
 router.get("/admin/user/get/:id", getUserByPk); //? Traer usuario por id
-router.get("/admin/user/get", getAllUsers); //? Traer todos los usuarios
+router.get("/admin/users/get", getAllUsers); //? Traer todos los usuarios
 router.put("/admin/user/update/:id", updateUser); //? Actualizar usuario
 
 export default router;
