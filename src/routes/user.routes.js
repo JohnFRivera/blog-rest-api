@@ -1,4 +1,4 @@
-import { Router } from "express";
+﻿import { Router } from "express";
 import {
   authenticate,
   createUser,
@@ -15,7 +15,7 @@ const router = Router();
  */
 router.post("/user/auth", authenticate); //? Inicio de sesión
 router.post("/user/create", createUser); //? Registrarse
-router.post("/users/count", getCountUsers); //? Registrarse
+router.get("/users/count", getCountUsers); //? Registrarse
 router.get("/profile/:img", getProfileImg); //? Servir Imagen
 /**
  * Private
