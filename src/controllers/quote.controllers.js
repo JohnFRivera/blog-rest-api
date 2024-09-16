@@ -4,7 +4,7 @@ import Author from "../models/author.js";
 const createQuote = async (req, res) => {
   try {
     let quote = await Quote.create(req.body);
-    quote.dataValues.Author = await Author.findByPk(req.body.authorId, {
+    quote.dataValues.Author = await Author.findByPk(req.body.AuthorId, {
       attributes: ["id", "photoUrl", "name"],
     });
     res.status(200).send(quote);
