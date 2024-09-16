@@ -1,21 +1,21 @@
 import { Router } from "express";
 import {
   authenticate,
-  getUploadMiddleware,
   createUser,
   updateUser,
+  getCountUsers,
   getUserByPk,
   getAllUsers,
   getProfileImg,
 } from "../controllers/user.controllers.js";
 
 const router = Router();
-const upload = getUploadMiddleware();
 /**
  * Public
  */
 router.post("/user/auth", authenticate); //? Inicio de sesión
-router.post("/user/create", upload.single("photo"), createUser); //? Registrarse
+router.post("/user/create", createUser); //? Registrarse
+router.post("/users/count", getCountUsers); //? Registrarse
 router.get("/profile/:img", getProfileImg); //? Servir Imagen
 /**
  * Private

@@ -7,7 +7,7 @@ const router = Router();
  */
 router.get("/quote/get/:id", getQuoteByPk); //? Traer cita por id
 router.get("/quotes/get", getAllQuotes); //? Traer todas las citas
-router.get("/quotes/autor/:id", getAllQuotesByAuthorPk); //? Traer todas las citas de autor por su id
+router.get("/quotes/author/:id", getAllQuotesByAuthorPk); //? Traer todas las citas de autor por su id
 /**
  * Private
  */

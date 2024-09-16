@@ -21,13 +21,15 @@ const authenticate = async (req, res) => {
             //? valid admin
             if (user.role == "Administrador") {
               userData.isAdmin = true;
-            };
+            }
             res.status(200).send(userData);
           } else {
             res.status(400).send({ error: "La contraseña es incorrecta" });
           }
         } else {
-          res.status(500).send({ error: "Error de encriptación", result: error });
+          res
+            .status(500)
+            .send({ error: "Error de encriptación", result: error });
         }
       });
     } else {
@@ -37,38 +39,20 @@ const authenticate = async (req, res) => {
     res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
-//Crear usuario y almacenar imagen
-let globalPhotoName = "user-tumbnail.jpg";
-//? función para almacenar imagen
-const storage = sharpMulter({
-  destination: (req, file, cb) => cb(null, path.resolve("public/uploads")),
-  imageOptions: {
-    fileFormat: "jpg",
-    quality: 75,
-    resize: { width: 130, height: 130 },
-  },
-  filename: (originalname, options, req) => {
-    globalPhotoName = `${Date.now()}.${options.fileFormat}`;
-    return globalPhotoName;
-  },
-});
-//? Obtener middleware "upload"
-const getUploadMiddleware = () => {
-  return multer({ storage });
-};
 const createUser = async (req, res) => {
   try {
     const validEmail = await User.findOne({ where: { email: req.body.email } });
     if (!validEmail) {
       hash(req.body.password, 10, async (error, hash) => {
         if (!error) {
-          req.body.photo = globalPhotoName;
+          req.body.photo = `tumbnail-${Math.floor(Math.random() * 9) + 1}.jpg`;
           req.body.password = hash;
           let newUser = await User.create(req.body);
-          globalPhotoName = "user-tumbnail.jpg";
           res.status(200).send(newUser);
         } else {
-          res.status(500).send({ error: "Error al encriptar contraseña", result: error });
+          res
+            .status(500)
+            .send({ error: "Error al encriptar contraseña", result: error });
         }
       });
     } else {
@@ -88,6 +72,14 @@ const updateUser = async (req, res) => {
     res.status(400).send({ error: "Error en la consulta", result: error });
   }
 };
+const getCountUsers = async (req, res) => {
+  try {
+    let count = await User.count();
+    res.status(200).send(count);
+  } catch (error) {
+    res.status(400).send({ error: "Error en la consulta", result: error });
+  }
+};
 const getUserByPk = async (req, res) => {
   try {
     let user = await User.findByPk(req.params.id);
@@ -99,7 +91,16 @@ const getUserByPk = async (req, res) => {
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: ["id", "photo", "name", "email", "role", "state", "createdAt", "updatedAt"],
+      attributes: [
+        "id",
+        "photo",
+        "name",
+        "email",
+        "role",
+        "state",
+        "createdAt",
+        "updatedAt",
+      ],
       order: [["createdAt", "DESC"]],
     });
     res.status(200).send(users);
@@ -108,8 +109,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 const getProfileImg = async (req, res) => {
-  const imageName = req.params.img;
-  res.sendFile(path.resolve("./public/uploads/", imageName), (error) => {
+  res.sendFile(path.resolve("./public/uploads/", req.params.img), (error) => {
     if (error) {
       res.status(404).send({
         error: "Imagen no encontrada",
@@ -121,9 +121,9 @@ const getProfileImg = async (req, res) => {
 
 export {
   authenticate,
-  getUploadMiddleware,
   createUser,
   updateUser,
+  getCountUsers,
   getUserByPk,
   getAllUsers,
   getProfileImg,

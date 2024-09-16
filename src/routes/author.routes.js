@@ -6,7 +6,7 @@ const router = Router();
  * Public
  */
 router.get("/author/get/:id", getAuthorByPk); //? Traer autor por su id
-router.get("/authors/getall", getAllAuthors); //? Traer todos los autores
+router.get("/authors/get", getAllAuthors); //? Traer todos los autores
 /**
  * Private
  */
