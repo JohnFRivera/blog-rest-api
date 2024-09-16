@@ -75,7 +75,7 @@ const updateUser = async (req, res) => {
 const getCountUsers = async (req, res) => {
   try {
     let count = await User.count();
-    res.status(200).send(count);
+    res.status(200).send({ count });
   } catch (error) {
     res.status(400).send({ error: "Error en la consulta", result: error });
   }
